@@ -1,24 +1,24 @@
 package com.example.aston_project.dao;
 
 import com.example.aston_project.Util;
-import com.example.aston_project.entity.Employee;
-import com.example.aston_project.entity.Project;
+import com.example.aston_project.entity.Employee_project;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDAO extends Util implements DAO<Project> {
+public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
 
     @Override
-    public void add(Project project) {
+    public void add(Employee_project employee_project) {
         PreparedStatement preparedStatement = null;
-        String sql = "insert into project (title) values (?)";
+        String sql = "insert into Employee_project (employee_id, project_id) values (?,?)";
 
         try {
             preparedStatement = getConnection().prepareStatement(sql);
 
-            preparedStatement.setString(1, project.getTitle());
+            preparedStatement.setInt(1, employee_project.getEmployee_id());
+            preparedStatement.setInt(2, employee_project.getProject_id());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -30,11 +30,11 @@ public class ProjectDAO extends Util implements DAO<Project> {
     }
 
     @Override
-    public List<Project> getAll() {
+    public List<Employee_project> getAll() {
 
-        List<Project> projectList = new ArrayList<>();
+        List<Employee_project> employee_projectList = new ArrayList<>();
 
-        String sql = "select id, title from project";
+        String sql = "select employee_id, project_id from employee_project";
 
         Statement statement = null;
 
@@ -44,11 +44,11 @@ public class ProjectDAO extends Util implements DAO<Project> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                Project project = new Project();
-                project.setId(resultSet.getInt("id"));
-                project.setTitle(resultSet.getString("fist_name"));
+                Employee_project employee_project = new Employee_project();
+                employee_project.setEmployee_id(resultSet.getInt("employee_id"));
+                employee_project.setProject_id(resultSet.getInt("project_id"));
 
-                projectList.add(project);
+                employee_projectList.add(employee_project);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,24 +56,25 @@ public class ProjectDAO extends Util implements DAO<Project> {
             closeStatement(statement);
             closeConnection();
         }
-        return projectList;
+        return employee_projectList;
     }
 
     @Override
-    public Project getById(int id) {
+    public Employee_project getById(int empId, int projId) {
         PreparedStatement preparedStatement = null;
 
-        String sql = "select id, title from project where id = ?";
+        String sql = "select employee_id, project_id from employee_project where employee_id = ? and project_id = ?";
 
-        Project project = new Project();
+        Employee_project employee_project = new Employee_project();
         try {
             preparedStatement = getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, employee_project.getEmployee_id());
+            preparedStatement.setInt(2, employee_project.getProject_id());
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            project.setId(resultSet.getInt("id"));
-            project.setTitle(resultSet.getString("title"));
+            employee_project.setEmployee_id(resultSet.getInt("employee_id"));
+            employee_project.setProject_id(resultSet.getInt("project_id"));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,19 +82,19 @@ public class ProjectDAO extends Util implements DAO<Project> {
             closePrepareStatement(preparedStatement);
             closeConnection();
         }
-        return project;
+        return employee_project;
     }
 
     @Override
-    public void update(Project project) {
+    public void update(Employee_project employee_project) {
         PreparedStatement preparedStatement = null;
-        String sql = "update project set id = ?, title = ?";
+        String sql = "update employee_project set employee_id = ? and project_id = ?";
 
         try {
             preparedStatement = getConnection().prepareStatement(sql);
 
-            preparedStatement.setInt(1, project.getId());
-            preparedStatement.setString(2, project.getTitle());
+            preparedStatement.setInt(1, employee_project.getEmployee_id());
+            preparedStatement.setInt(2, employee_project.getProject_id());
 
             preparedStatement.executeUpdate();
 
@@ -106,16 +107,17 @@ public class ProjectDAO extends Util implements DAO<Project> {
     }
 
     @Override
-    public void remove(Project project) {
+    public void remove(Employee_project employee_project) {
 
         PreparedStatement preparedStatement = null;
 
-        String sql = "delete from project where id = ?";
+        String sql = "delete from employee_project where employee_id = ? and project_id = ?";
 
         try {
             preparedStatement = getConnection().prepareStatement(sql);
 
-            preparedStatement.setInt(1, project.getId());
+            preparedStatement.setInt(1, employee_project.getEmployee_id());
+            preparedStatement.setInt(1, employee_project.getProject_id());
 
             preparedStatement.executeUpdate();
 

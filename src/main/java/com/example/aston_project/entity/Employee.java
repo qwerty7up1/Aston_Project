@@ -10,6 +10,7 @@ public class Employee {
     private Date birthday;
     private int address_id;
 
+
     public Employee() {}
 
     public int getId() {
