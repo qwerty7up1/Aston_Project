@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
+public class EmpProjDAO extends Util implements Emp_ProjDAO<Employee_project> {
 
     @Override
     public void add(Employee_project employee_project) {
@@ -72,10 +72,10 @@ public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
             preparedStatement.setInt(2, employee_project.getProject_id());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            employee_project.setEmployee_id(resultSet.getInt("employee_id"));
-            employee_project.setProject_id(resultSet.getInt("project_id"));
-
+            while (resultSet.next()) {
+                employee_project.setEmployee_id(resultSet.getInt("employee_id"));
+                employee_project.setProject_id(resultSet.getInt("project_id"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -86,7 +86,7 @@ public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
     }
 
     @Override
-    public void update(Employee_project employee_project) {
+    public void update(Employee_project employee_project, int empId, int projId) {
         PreparedStatement preparedStatement = null;
         String sql = "update employee_project set employee_id = ? and project_id = ?";
 
@@ -107,7 +107,7 @@ public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
     }
 
     @Override
-    public void remove(Employee_project employee_project) {
+    public void remove(Employee_project employee_project, int empId, int projId) {
 
         PreparedStatement preparedStatement = null;
 
@@ -116,8 +116,8 @@ public class EmpProjDAO extends Util implements EPDAO<Employee_project> {
         try {
             preparedStatement = getConnection().prepareStatement(sql);
 
-            preparedStatement.setInt(1, employee_project.getEmployee_id());
-            preparedStatement.setInt(1, employee_project.getProject_id());
+            preparedStatement.setInt(1, empId);
+            preparedStatement.setInt(1, projId);
 
             preparedStatement.executeUpdate();
 

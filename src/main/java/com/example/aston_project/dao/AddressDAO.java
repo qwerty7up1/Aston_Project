@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressDAO extends Util implements DAO<Address> {
+public class AddressDAO extends Util implements AbstractDAO<Address> {
 
     @Override
     public void add(Address address) {
@@ -26,8 +26,8 @@ public class AddressDAO extends Util implements DAO<Address> {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-           closePrepareStatement(preparedStatement);
-           closeConnection();
+            closePrepareStatement(preparedStatement);
+            closeConnection();
         }
     }
 
@@ -67,7 +67,6 @@ public class AddressDAO extends Util implements DAO<Address> {
     @Override
     public Address getById(int id) {
         PreparedStatement preparedStatement = null;
-
         String sql = "select id, country, city, street, post_code from address where id = ?";
 
         Address address = new Address();
@@ -77,11 +76,39 @@ public class AddressDAO extends Util implements DAO<Address> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            address.setId(resultSet.getInt("id"));
-            address.setCountry(resultSet.getString("country"));
-            address.setCity(resultSet.getString("city"));
-            address.setStreet(resultSet.getString("street"));
-            address.setPost_code(resultSet.getString("post_code"));
+            while (resultSet.next()) {
+                address.setId(resultSet.getInt("id"));
+                address.setCountry(resultSet.getString("country"));
+                address.setCity(resultSet.getString("city"));
+                address.setStreet(resultSet.getString("street"));
+                address.setPost_code(resultSet.getString("post_code"));
+
+            }
+        } catch (SQLException e) {
+        } finally {
+            closePrepareStatement(preparedStatement);
+            closeConnection();
+        }
+
+        return address;
+    }
+
+    @Override
+    public void update(Address address, int id) {
+        PreparedStatement preparedStatement = null;
+
+        String sql = "update address set country = ?, city = ?, street = ?, post_code = ? where id = ?";
+
+        try {
+            preparedStatement = getConnection().prepareStatement(sql);
+
+            preparedStatement.setString(1, address.getCountry());
+            preparedStatement.setString(2, address.getCity());
+            preparedStatement.setString(3, address.getStreet());
+            preparedStatement.setString(4, address.getPost_code());
+            preparedStatement.setInt(5, id);
+
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,36 +116,10 @@ public class AddressDAO extends Util implements DAO<Address> {
             closePrepareStatement(preparedStatement);
             closeConnection();
         }
-        return address;
     }
 
     @Override
-    public void update(Address address) {
-        PreparedStatement preparedStatement = null;
-
-        String sql = "update address set id = ?, country = ?, city = ?, street = ?, post_code = ?";
-
-        try {
-            preparedStatement = getConnection().prepareStatement(sql);
-
-            preparedStatement.setInt(1, address.getId());
-            preparedStatement.setString(2, address.getCountry());
-            preparedStatement.setString(3, address.getCity());
-            preparedStatement.setString(4, address.getStreet());
-            preparedStatement.setString(5, address.getPost_code());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-           closePrepareStatement(preparedStatement);
-           closeConnection();
-        }
-    }
-
-    @Override
-    public void remove(Address address) {
+    public void remove(Address address, int id) {
 
         PreparedStatement preparedStatement = null;
 
@@ -127,15 +128,15 @@ public class AddressDAO extends Util implements DAO<Address> {
         try {
             preparedStatement = getConnection().prepareStatement(sql);
 
-            preparedStatement.setInt(1, address.getId());
+            preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-           closePrepareStatement(preparedStatement);
-           closeConnection();
+            closePrepareStatement(preparedStatement);
+            closeConnection();
         }
 
     }

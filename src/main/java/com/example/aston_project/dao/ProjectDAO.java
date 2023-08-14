@@ -1,14 +1,13 @@
 package com.example.aston_project.dao;
 
 import com.example.aston_project.Util;
-import com.example.aston_project.entity.Employee;
 import com.example.aston_project.entity.Project;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDAO extends Util implements DAO<Project> {
+public class ProjectDAO extends Util implements AbstractDAO<Project> {
 
     @Override
     public void add(Project project) {
@@ -71,10 +70,10 @@ public class ProjectDAO extends Util implements DAO<Project> {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            project.setId(resultSet.getInt("id"));
-            project.setTitle(resultSet.getString("title"));
-
+            while (resultSet.next()) {
+                project.setId(resultSet.getInt("id"));
+                project.setTitle(resultSet.getString("title"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -85,7 +84,7 @@ public class ProjectDAO extends Util implements DAO<Project> {
     }
 
     @Override
-    public void update(Project project) {
+    public void update(Project project, int id) {
         PreparedStatement preparedStatement = null;
         String sql = "update project set id = ?, title = ?";
 
@@ -106,7 +105,7 @@ public class ProjectDAO extends Util implements DAO<Project> {
     }
 
     @Override
-    public void remove(Project project) {
+    public void remove(Project project, int id) {
 
         PreparedStatement preparedStatement = null;
 

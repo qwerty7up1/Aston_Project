@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDAO extends Util implements DAO<Employee> {
+public class EmployeeDAO extends Util implements AbstractDAO<Employee> {
 
     Connection connection;
 
@@ -87,13 +87,13 @@ public class EmployeeDAO extends Util implements DAO<Employee> {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            employee.setId(resultSet.getInt("id"));
-            employee.setFirst_name(resultSet.getString("fist_name"));
-            employee.setLast_name(resultSet.getString("last_name"));
-            employee.setBirthday(resultSet.getDate("birthday"));
-            employee.setAddress_id(resultSet.getInt("address_id"));
-
+            while (resultSet.next()) {
+                employee.setId(resultSet.getInt("id"));
+                employee.setFirst_name(resultSet.getString("fist_name"));
+                employee.setLast_name(resultSet.getString("last_name"));
+                employee.setBirthday(resultSet.getDate("birthday"));
+                employee.setAddress_id(resultSet.getInt("address_id"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -104,7 +104,7 @@ public class EmployeeDAO extends Util implements DAO<Employee> {
     }
 
     @Override
-    public void update(Employee employee) {
+    public void update(Employee employee, int id) {
         PreparedStatement preparedStatement = null;
         String sql = "update employee set id = ?, fist_name = ?, last_name = ?, birthday = ?, address_id = ?";
 
@@ -128,7 +128,7 @@ public class EmployeeDAO extends Util implements DAO<Employee> {
     }
 
     @Override
-    public void remove(Employee employee) {
+    public void remove(Employee employee, int id) {
 
         PreparedStatement preparedStatement = null;
 
@@ -137,7 +137,7 @@ public class EmployeeDAO extends Util implements DAO<Employee> {
         try {
             preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, employee.getId());
+            preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
 

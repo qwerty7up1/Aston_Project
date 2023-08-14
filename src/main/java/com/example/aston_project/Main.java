@@ -1,13 +1,10 @@
 package com.example.aston_project;
 
-import com.example.aston_project.dao.AddressDAO;
-import com.example.aston_project.dao.EmpProjDAO;
-import com.example.aston_project.dao.EmployeeDAO;
-import com.example.aston_project.dao.ProjectDAO;
 import com.example.aston_project.entity.Address;
 import com.example.aston_project.entity.Employee;
-import com.example.aston_project.entity.Employee_project;
 import com.example.aston_project.entity.Project;
+import com.example.aston_project.service.AddressServiceImpl;
+import com.example.aston_project.service.EmployeeServiceImpl;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -15,40 +12,28 @@ import java.time.LocalDate;
 public class Main {
     public static void main(String[] args) {
 
-        AddressDAO addressDAO = new AddressDAO();
-        EmployeeDAO employeeDAO = new EmployeeDAO();
-        ProjectDAO projectDAO = new ProjectDAO();
-        EmpProjDAO empProjDAO = new EmpProjDAO();
+        AddressServiceImpl addressService = new AddressServiceImpl();
+        EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
         Address address = new Address();
-        address.setId(1);
         address.setCountry("RF");
         address.setCity("NN");
-        address.setStreet("Korably");
-        address.setPost_code("603000");
+        address.setStreet("K");
+        address.setPost_code("603009");
 
         Employee employee = new Employee();
-        employee.setId(1);
         employee.setFirst_name("first");
         employee.setLast_name("second");
         employee.setBirthday(Date.valueOf(LocalDate.now()));
         employee.setAddress_id(1);
 
         Project project = new Project();
-        project.setId(1);
         project.setTitle("title1");
 
-        Employee_project employee_project = new Employee_project();
-        employee_project.setEmployee_id(1);
-        employee_project.setProject_id(1);
+        addressService.update(address, 3, "belarusia", "gomel", "lenina", "123123");
+        addressService.update(address, 5, "RF", "NN", "K", "603009");
+        System.out.println(addressService.getAll());
 
-        try {
-            addressDAO.add(address);
-            employeeDAO.add(employee);
-            projectDAO.add(project);
-            empProjDAO.add(employee_project);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        System.out.println(addressService.getById(99));
     }
 }
