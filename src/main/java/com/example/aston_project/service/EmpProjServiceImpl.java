@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EmpProjServiceImpl implements EmpProjService<Employee_project> {
 
-    EmpProjDAO empProjDAO = new EmpProjDAO();
+    private final EmpProjDAO empProjDAO = new EmpProjDAO();
 
     @Override
     public void add(Employee_project e) {

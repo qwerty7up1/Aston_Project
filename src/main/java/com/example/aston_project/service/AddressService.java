@@ -13,8 +13,8 @@ public interface AddressService<E> {
     E getById(int id);
 
     //update
-    void update(E e, int id, String country, String city, String street, String post_code);
+    void update(E e);
 
     //delete
-    void remove(E e, int id);
+    void remove(E e);
 }

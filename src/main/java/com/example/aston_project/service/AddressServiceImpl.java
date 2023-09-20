@@ -7,7 +7,7 @@ import java.util.List;
 
 public class AddressServiceImpl implements AddressService<Address> {
 
-    AddressDAO addressDAO = new AddressDAO();
+    private final AddressDAO addressDAO = new AddressDAO();
 
     @Override
     public void add(Address address) {
@@ -25,17 +25,12 @@ public class AddressServiceImpl implements AddressService<Address> {
     }
 
     @Override
-    public void update(Address address, int id, String country, String city, String street, String post_code) {
-        address.setId(id);
-        address.setCountry(country);
-        address.setCity(city);
-        address.setStreet(street);
-        address.setPost_code(post_code);
-        addressDAO.update(address, id);
+    public void update(Address address) {
+        addressDAO.update(address);
     }
 
     @Override
-    public void remove(Address address, int id) {
-        addressDAO.remove(address, id);
+    public void remove(Address address) {
+        addressDAO.remove(address);
     }
 }

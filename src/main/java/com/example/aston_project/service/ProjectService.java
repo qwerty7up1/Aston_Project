@@ -14,8 +14,8 @@ public interface ProjectService <E>{
     E getById(int id);
 
     //update
-    void update(E e, int id, String title);
+    void update(E e);
 
     //delete
-    void remove(E e, int id);
+    void remove(E e);
 }

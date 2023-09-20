@@ -11,6 +11,10 @@ public class Address {
 
     public Address(){}
 
+    public Address(String country){
+        this.country = country;
+    }
+
     public int getId() {
         return id;
     }

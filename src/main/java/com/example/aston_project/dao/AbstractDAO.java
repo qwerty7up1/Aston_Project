@@ -10,11 +10,11 @@ interface AbstractDAO<E> {
     List<E> getAll ();
 
     //readById
-    E getById(int T);
+    E getById(int id);
 
     //update
-    void update(E e, int T);
+    void update(E e);
 
     //delete
-    void remove(E e, int T);
+    void remove(E e);
 }

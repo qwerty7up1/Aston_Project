@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProjectServiceImpl implements ProjectService<Project> {
 
-    ProjectDAO projectDAO = new ProjectDAO();
+    private final ProjectDAO projectDAO = new ProjectDAO();
 
     @Override
     public void add(Project project) {
@@ -25,14 +25,12 @@ public class ProjectServiceImpl implements ProjectService<Project> {
     }
 
     @Override
-    public void update(Project project, int id, String title) {
-        project.setId(id);
-        project.setTitle(title);
-        projectDAO.update(project, id);
+    public void update(Project project) {
+        projectDAO.update(project);
     }
 
     @Override
-    public void remove(Project project, int id) {
-        projectDAO.remove(project, id);
+    public void remove(Project project) {
+        projectDAO.remove(project);
     }
 }

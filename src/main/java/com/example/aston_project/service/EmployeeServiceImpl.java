@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService<Employee> {
 
-    EmployeeDAO employeeDAO = new EmployeeDAO();
+    private final EmployeeDAO employeeDAO = new EmployeeDAO();
 
     @Override
     public void add(Employee employee) {
@@ -26,17 +26,13 @@ public class EmployeeServiceImpl implements EmployeeService<Employee> {
     }
 
     @Override
-    public void update(Employee employee, int id, String first_name, String last_name, Date birthday, int address_id) {
-        employee.setId(id);
-        employee.setFirst_name(first_name);
-        employee.setLast_name(last_name);
-        employee.setBirthday(birthday);
-        employee.setAddress_id(address_id);
-        employeeDAO.update(employee, id);
+    public void update(Employee employee) {
+        employeeDAO.update(employee);
     }
 
     @Override
-    public void remove(Employee employee, int id) {
-        employeeDAO.remove(employee, id);
+    public void remove(Employee employee) {
+        employeeDAO.remove(employee);
     }
+
 }
